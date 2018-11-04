@@ -3,9 +3,9 @@
 #include <avr/interrupt.h>
 
 #define PIN 3              // pin on which the NeoPixel will be connected
-#define NUMPIXELS 3        // number of pixels in the NeoPixel
+#define NUMPIXELS 90        // number of pixels in the NeoPixel
 #define BUTTON_PIN   0     // pin on which the toggle button is connected
-#define TOTAL_ROUTINES 8   // number of routines to show
+#define TOTAL_ROUTINES 9   // number of routines to show
 #define DEBOUNCE_DELAY 50  // milliseconds to debounce the toggle button
 #define LED 4              // pin on which the power on led is connected
 
@@ -73,6 +73,9 @@ void startShow(int i) {
     case 7:
       theaterChaseRainbow(50);
       break;
+    default:
+      cycleAll();
+      break;
   }
 }
 
@@ -85,7 +88,7 @@ void turnRed()
     if (isInterrupted == HIGH) return;
     strip.setPixelColor(i, strip.Color(255, 0, 0));
     strip.show();
-    delay(100);
+    delay(50);
   }
   turnOff();
 }
@@ -99,7 +102,7 @@ void turnGreen()
     if (isInterrupted == HIGH) return;
     strip.setPixelColor(i, strip.Color(0, 255, 0));
     strip.show();
-    delay(100);
+    delay(50);
   }
   turnOff();
 }
@@ -113,7 +116,7 @@ void turnBlue()
     if (isInterrupted == HIGH) return;
     strip.setPixelColor(i, strip.Color(0, 0, 255));
     strip.show();
-    delay(100);
+    delay(50);
   }
   turnOff();
 }
@@ -127,7 +130,7 @@ void turnOff()
     if (isInterrupted == HIGH) return;
     strip.setPixelColor(i, strip.Color(0, 0, 0));
     strip.show();
-    delay(100);
+    delay(50);
   }
 }
 
@@ -278,6 +281,18 @@ void theaterChaseRainbow(uint8_t wait)
       }
     }
   }
+}
+
+void cycleAll()
+{
+  turnRed();
+  turnGreen();
+  turnBlue();
+  doWipe();
+  doTheaterChase();
+  rainbow(20);
+  rainbowCycle(20);
+  theaterChaseRainbow(50);
 }
 
 // Input a value 0 to 255 to get a color value.
